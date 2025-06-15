@@ -110,37 +110,35 @@ default: &default
   adapter: postgresql
   encoding: unicode
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  username: <%= ENV.fetch("PG_USERNAME", "postgres") %>
+  password: <%= ENV.fetch("PG_PASSWORD", "") %>
+  host: <%= ENV.fetch("PG_HOST", "localhost") %>
+  port: <%= ENV.fetch("PG_PORT", 5432) %>
 
 development:
   <<: *default
   database: airbnb_development
-  #username: mohamedhedigharbi
-  #password:
-  #host: localhost
-  #port: 5432
 
 test:
   <<: *default
   database: airbnb_test
-  #username: mohamedhedigharbi
-  #password:
-  #host: localhost
-  #port: 5432
 
 production:
+  <<: *default
   url: <%= ENV['DATABASE_URL'] %>
 
   cache:
-    <<: *primary_production
+    <<: *default
     database: airbnb_production_cache
     migrations_paths: db/cache_migrate
 
   queue:
-    <<: *primary_production
+    <<: *default
     database: airbnb_production_queue
     migrations_paths: db/queue_migrate
 
   cable:
-    <<: *primary_production
+    <<: *default
     database: airbnb_production_cable
     migrations_paths: db/cable_migrate
+
