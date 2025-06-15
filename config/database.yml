@@ -62,11 +62,9 @@
 # production:
 #   <<: *default
 #   database: airbnb_production
-
 default: &default
   adapter: postgresql
   encoding: unicode
-  # Pour la gestion du pool de connexions, on prend la variable d'environnement ou 5 par défaut
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
 
 development:
@@ -86,9 +84,69 @@ test:
   #port: 5432
 
 production:
+  primary: &primary_production
+    <<: *default
+    database: airbnb_production
+    username: mohamedhedigharbi
+    password: <%= ENV["PGPASSWORD"] %>
+    host: <%= ENV["PGHOST"] || 'localhost' %>
+    port: 5432
+
+  cache:
+    <<: *primary_production
+    database: airbnb_production_cache
+    migrations_paths: db/cache_migrate
+
+  queue:
+    <<: *primary_production
+    database: airbnb_production_queue
+    migrations_paths: db/queue_migrate
+
+  cable:
+    <<: *primary_production
+    database: airbnb_production_cable
+    migrations_paths: db/cable_migrate
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+
+development:
   <<: *default
-  database: airbnb_production
-  username: mohamedhedigharbi
-  password: <%= ENV["PGPASSWORD"] %>
-  host: <%= ENV["PGHOST"] || 'localhost' %>
-  port: 5432
+  database: airbnb_development
+  #username: mohamedhedigharbi
+  #password:
+  #host: localhost
+  #port: 5432
+
+test:
+  <<: *default
+  database: airbnb_test
+  #username: mohamedhedigharbi
+  #password:
+  #host: localhost
+  #port: 5432
+
+production:
+  primary: &primary_production
+    <<: *default
+    database: airbnb_production
+    username: mohamedhedigharbi
+    password: <%= ENV["PGPASSWORD"] %>
+    host: <%= ENV["PGHOST"] || 'localhost' %>
+    port: 5432
+
+  cache:
+    <<: *primary_production
+    database: airbnb_production_cache
+    migrations_paths: db/cache_migrate
+
+  queue:
+    <<: *primary_production
+    database: airbnb_production_queue
+    migrations_paths: db/queue_migrate
+
+  cable:
+    <<: *primary_production
+    database: airbnb_production_cable
+    migrations_paths: db/cable_migrate
