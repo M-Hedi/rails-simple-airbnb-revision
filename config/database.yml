@@ -42,23 +42,53 @@
 
 
 
+# default: &default
+#   adapter: postgresql
+#   encoding: unicode
+#   username: mohamedhedigharbi
+#   password: <%= ENV['PGPASSWORD'] || '' %>
+#   host: <%= ENV['PGHOST'] || 'localhost' %>
+#   port: 5432
+#   pool: 5
+
+# development:
+#   <<: *default
+#   database: airbnb_development
+
+# test:
+#   <<: *default
+#   database: airbnb_test
+
+# production:
+#   <<: *default
+#   database: airbnb_production
+
 default: &default
   adapter: postgresql
   encoding: unicode
-  username: mohamedhedigharbi
-  password: <%= ENV['PGPASSWORD'] || '' %>
-  host: <%= ENV['PGHOST'] || 'localhost' %>
-  port: 5432
-  pool: 5
+  # Pour la gestion du pool de connexions, on prend la variable d'environnement ou 5 par défaut
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
 
 development:
   <<: *default
   database: airbnb_development
+  #username: mohamedhedigharbi
+  #password:
+  #host: localhost
+  #port: 5432
 
 test:
   <<: *default
   database: airbnb_test
+  #username: mohamedhedigharbi
+  #password:
+  #host: localhost
+  #port: 5432
 
 production:
   <<: *default
   database: airbnb_production
+  username: mohamedhedigharbi
+  password: <%= ENV["PGPASSWORD"] %>
+  host: <%= ENV["PGHOST"] || 'localhost' %>
+  port: 5432
