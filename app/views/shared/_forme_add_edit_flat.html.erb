@@ -1,0 +1,15 @@
+<div class="container bg-light mt-5" style="width:500px;">
+    <h2 class="m-3">Add a new Flat</h2>
+
+
+  <%= simple_form_for(flat) do |f| %>
+    <%= f.input :name %>
+    <%= f.input :address %>
+    <%= f.input :description%>
+    <%= f.input :price_per_night%>
+    <%= f.input :number_of_guests%>
+    <%= f.label :picture_url %>
+    <%= f.text_field :picture_url, class: "form-control" %>
+    <%= f.submit "Add/Edit Flat" , class: "btn btn-primary"  %>  <% end %>
+
+</div>

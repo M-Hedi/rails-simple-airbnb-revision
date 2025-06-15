@@ -1,0 +1,39 @@
+<div class="container">
+  <h1><%="All our Flats (#{Flat.count})"%></h1>
+
+  <div >
+    <%= simple_form_for :search, url: flats_path, method: :get, html: { class: "form-inline" } do |f| %>
+    <div class="form-group d-flex m-4 justify-content-center">
+      <%= f.input :query, label: false, input_html: { placeholder: "Search a flat...", value: params[:query], class: "form-control" } %>
+<%= f.button :submit, "Search", class: "btn btn-outline-success ms-2", style: "height:37px;" %>
+    </div>
+
+    <% end %>
+  </div>
+
+
+
+  <div class="d-flex flex-wrap gap-3 justify-content-between">
+    <% @flats.each do |flat| %>
+
+
+        <div class="card p-3 shadow-sm rounded" style="width: 30%;">
+          <% if flat.picture_url.present? %>
+            <%= image_tag flat.picture_url, class: "img-thumbnail", width: 300 %>
+          <% end %>
+          <h4 class="mb-2">🏠 <%= flat.name %></h4>
+          <p class="mb-1"> <%= flat.address %></p>
+          <div class="d-flex align-items-center gap-3">
+            <i class="fa-solid fa-people-line"><%= flat.number_of_guests %></i>
+            <p class="mb-0"><strong><%= flat.price_per_night %>€</strong> / nuit</p>
+          </div>
+          <div class="d-flex justify-content-between mt-3">
+            <%= link_to "View", flat_path(flat), class: "btn btn-outline-secondary" %>
+            <%= link_to "Edit", edit_flat_path(flat), class: "btn btn-primary" %>
+            <%= link_to "Delete",flat_path(flat),data: {turbo_method: :delete, turbo_confirm: "Are you sure?"} , class: "btn btn-outline-danger "%>
+          </div>
+        </div>
+    <% end %>
+
+  </div>
+</div>
